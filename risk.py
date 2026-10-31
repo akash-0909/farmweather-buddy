@@ -11,8 +11,14 @@ HEAVY_RAIN_MM = 64.5
 WINDOW_DAYS = 3
 
 # Version 1 is deliberately narrow: one crop, one hazard.
+# heat_max_c: indicative daily max temperature above which the crop's sensitive
+# stage can suffer heat stress. Rules of thumb, not official limits.
 CROPS = {
-    "Rice (paddy)": {"stage": "harvest and drying", "hazard": "heavy rain"},
+    "Rice (paddy)": {"stage": "harvest and drying", "hazard": "heavy rain", "heat_max_c": 35.0},
+    "Wheat": {"stage": "grain filling and harvest", "hazard": "heavy rain", "heat_max_c": 32.0},
+    "Maize": {"stage": "harvest and drying", "hazard": "heavy rain", "heat_max_c": 35.0},
+    "Cotton": {"stage": "boll opening and picking", "hazard": "heavy rain", "heat_max_c": 38.0},
+    "Tomato": {"stage": "fruiting and picking", "hazard": "heavy rain", "heat_max_c": 35.0},
 }
 
 

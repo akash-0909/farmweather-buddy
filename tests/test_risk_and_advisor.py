@@ -67,3 +67,19 @@ def test_grounding_accepts_known_numbers_and_rejects_invented_ones():
     facts, _ = _facts(a)
     assert advisor._grounded("About 20 mm of rain is likely on 2026-11-01, with an 80 percent chance.", facts)
     assert not advisor._grounded("Expect 120 mm of rain.", facts)
+
+
+def test_truncated_ai_answer_is_rejected(monkeypatch):
+    a = risk.assess_rain_risk([day("2026-11-01", 20.0, 80)])
+    facts, info = _facts(a)
+    monkeypatch.setitem(advisor._CALLERS, "gemini", lambda f, k, m: "In Ranchi, the heavy rain risk is low. On 2026-11-01, there")
+    adv = advisor.generate_advice(facts, advisor.rule_based_advice("Rice (paddy)", info, a), "key", "m", "gemini")
+    assert adv.method == "rules" and "cut off" in adv.note
+
+
+def test_complete_ai_answer_is_accepted(monkeypatch):
+    a = risk.assess_rain_risk([day("2026-11-01", 20.0, 80)])
+    facts, info = _facts(a)
+    monkeypatch.setitem(advisor._CALLERS, "gemini", lambda f, k, m: "About 20 mm of rain is likely on 2026-11-01. Consider covering grain.")
+    adv = advisor.generate_advice(facts, advisor.rule_based_advice("Rice (paddy)", info, a), "key", "m", "gemini")
+    assert adv.method == "ai"

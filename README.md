@@ -25,9 +25,9 @@ app.py      ── Streamlit UI: risk banner, chart, table, advice, source + tim
 
 ## Scope (version 1)
 
-- One crop: Rice (paddy), harvest and drying stage
-- One hazard: rain in the next 3 days
-- Data used: rainfall and temperature forecast only. **No soil, market, or satellite data is used or claimed.**
+- Five crops (rice, wheat, maize, cotton, tomato) with a 7-day harvest/spray/irrigation planner
+- Hazards: rain risk (3 days), wind, heat stress, soil dryness
+- Data used: rainfall, temperature, wind, evapotranspiration and modelled soil moisture from Open-Meteo. No market or satellite-imagery data is used or claimed.
 
 ## Run locally
 

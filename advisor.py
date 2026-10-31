@@ -22,7 +22,8 @@ SYSTEM_PROMPT = """You explain weather forecasts to farmers in simple, calm lang
 Rules:
 - Use ONLY the facts in the JSON the user sends. Do not invent numbers, dates, or conditions.
 - Do not mention soil, market prices, satellite data, or pesticide/fertiliser doses.
-- Write at most 110 words: first what the forecast says, then one cautious suggestion
+- If a "plan" is given, mention the best day(s) for harvesting or spraying from it, and never contradict it.
+- Write at most 140 words: first what the forecast says, then one cautious suggestion
   for the crop stage given. Use words like "consider" or "if possible".
 - Use Western digits (0-9) for all numbers.
 - End with one short sentence telling the farmer to confirm with their local agriculture office or KVK.
@@ -37,7 +38,8 @@ class Advice:
 
 
 def build_facts(location: str, crop: str, crop_info: dict, assessment: RiskAssessment,
-                days: list[dict], forecast_meta: dict, language: str) -> dict:
+                days: list[dict], forecast_meta: dict, language: str,
+                plan: list[dict] | None = None) -> dict:
     return {
         "language": language,
         "location": location,
@@ -50,6 +52,7 @@ def build_facts(location: str, crop: str, crop_info: dict, assessment: RiskAsses
         "peak_rain_mm": assessment.peak_mm,
         "peak_rain_probability_percent": assessment.peak_prob,
         "next_days": days[: assessment.window_days],
+        "plan": plan or [],
         "data_source": forecast_meta["source"],
         "retrieved_at_utc": forecast_meta["retrieved_at_utc"],
     }
